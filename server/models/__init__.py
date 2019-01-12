@@ -196,3 +196,29 @@ class Menu_points(db.Model, Menu_points_mixin):
     position = db.Column(db.Integer)
     general_point_id = db.Column(db.Integer, db.ForeignKey('menu_points.id'))
     general_point = db.relationship('Menu_points', backref="sub_point", remote_side="Menu_points.id")
+
+class Article_pages(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    page_name = db.Column(db.Text)
+    page_transcription = db.Column(db.Text)
+    Article_container = db.relationship('Article_container', backref="article")
+
+class Article_container(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    page_id = db.Column(db.Integer, db.ForeignKey('article_pages.id'))
+    title = db.Column(db.Text)
+    position =  db.Column(db.Integer)
+    container_type = db.String(240)
+    article_text = db.relationship('Article_text', backref="article_container")
+    article_img = db.relationship('Article_img', backref="article_container")
+
+class Article_text(db.Model):
+    id= db.Column(db.Integer, primary_key=True)
+    cont_id = db.Column(db.Integer, db.ForeignKey('article_container.id'))
+    text = db.Column(db.Text)
+
+class Article_img(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cont_id = db.Column(db.Integer, db.ForeignKey('article_container.id'))
+    src = db.Column(db.Text)
+    alt = db.Column(db.Text)

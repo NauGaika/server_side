@@ -122,8 +122,3 @@ def get_default_option_glass():
     """Возвращает стекла для данной категории"""
     elems = Glass_option.get_all_menu_points()
     return elems
-
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def catch_all(path):
-    return render_template("index.html")
