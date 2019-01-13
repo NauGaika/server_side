@@ -217,8 +217,14 @@ class Article_text(db.Model):
     cont_id = db.Column(db.Integer, db.ForeignKey('article_container.id'))
     text = db.Column(db.Text)
 
-class Article_img(db.Model):
+class Article_img_containers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cont_id = db.Column(db.Integer, db.ForeignKey('article_container.id'))
-    src = db.Column(db.Text)
+    srcs = db.relationship('Article_img', backref="article_img_container")
     alt = db.Column(db.Text)
+
+class Article_img(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    alt = db.Column(db.Text)
+    src = db.Column(db.Text, nullable=False)
+    article_img_container_id = db.Column(db.Integer, db.ForeignKey('article_img_containers.id'))

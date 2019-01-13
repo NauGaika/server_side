@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from server import app, db
-from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template
+from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template, abort
 from .common import GetAllRecords, SetNewRecord
 from . import app
 from .models import Category, Common_props, Menu_points, Glass_type, Glass, Glass_option, Good, Good_option, Treetment, Treetment_option
@@ -22,11 +22,6 @@ def make_shell_context():
         'Treetment_option': Treetment_option
     }
 
-
-@app.route('/robots.txt')
-@app.route('/sitemap.xml')
-def static_from_root():
-    return send_from_directory(app.static_folder, request.path[1:])
 
 #для создания стекла
 @app.route('/api/get-all-category-for-glass/', methods=['GET','POST'])
@@ -122,3 +117,15 @@ def get_default_option_glass():
     """Возвращает стекла для данной категории"""
     elems = Glass_option.get_all_menu_points()
     return elems
+
+
+
+###############################################################3
+### add image
+@app.route('/api/article/add-img', methods=['GET','POST'])
+def add_article_img():
+    """add img to db"""
+    if request.method == 'POST':
+        print(request.form['alt'])
+        abort(404)
+        return 'test'
