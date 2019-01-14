@@ -217,6 +217,15 @@ class Article_container(db.Model):
     def __repr__(self):
         return '<контейнер id {} name {}>'.format(str(self.id), self.title)
 
+    def __call__(self):
+        newData = {}
+        newData.update({"id": self.id})
+        newData.update({"title": self.title})
+        newData.update({"position": self.position})
+        newData.update({"article_text": self.article_text})
+        newData.update({"article_img": self.article_img})
+        return newData
+
 class Article_text(db.Model):
     id= db.Column(db.Integer, primary_key=True)
     cont_id = db.Column(db.Integer, db.ForeignKey('article_container.id'))

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from .. import app
-from flask import Flask, flash, request, redirect, url_for
+from flask import Flask, flash, request, redirect, url_for, abort
 from werkzeug.utils import secure_filename
 from ..models import Article_pages, Article_container, Article_text, Article_img_containers, Article_img
 from .. import db
@@ -83,6 +83,7 @@ class Article_class:
                 title = ""
             k += 1
             new_a_c  = Article_container(title=title, position = k)
+            new_a_c.article = page
             db.session.add(new_a_c)
             cont_by_type = cls.create_containers_by_type(i, new_a_c)
             container_fillers.append(cont_by_type)
@@ -107,5 +108,54 @@ class Article_class:
         for i in arr_imgs:
             img = Article_img.query.get(i['id'])
             img.article_img_container = parent
+    #################################################
+    ################################################
+    ################################################
+    ################################################
+    @classmethod
+    def get_article_by_name(cls, article_name):
+        big_data = {
+        'title': "",
+        'description': "",
+        'containers': []
+        }
+        page = cls.article_by_name(article_name)
+        if page:
+            big_data['title'] = page.page_name
+            big_data['description'] = page.page_description
+            for i in page.article_containers:
+                if i.article_text:
+                    big_data['containers'].append({
+                        "title": i.title,
+                        "text": i.article_text[0].text,
+                        "type": 'text'
+                        })
+                elif i.article_img:
+                    big_data['containers'].append({'type': 'img', 'images': []})
+                    newArr = big_data['containers'][-1]['images']
+                    print(newArr)
+                    for b in i.article_img[0].imges:
+                        newArr.append({
+                        'alt': b.alt,
+                        'src': b.src
+                        })
+            return json.dumps(big_data)
+        return abort(404)
+
+    @classmethod
+    def article_by_name(cls, name):
+        page = Article_pages.query.filter_by(page_transcription = name).first()
+        return page
+
+    @classmethod
+    def get_all_article_title(cls):
+        all_art = Article_pages.query.all()
+        to_deliv = []
+        for i in all_art:
+            to_deliv.append({
+            'href': i.page_transcription,
+            'title': i.page_name
+            })
+        return json.dumps(to_deliv)
 
 __all__ = ['Article_class']

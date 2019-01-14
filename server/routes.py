@@ -19,7 +19,12 @@ def make_shell_context():
         'Good': Good,
         'Good_option': Good_option,
         'Treetment': Treetment,
-        'Treetment_option': Treetment_option
+        'Treetment_option': Treetment_option,
+        'Article_pages': Article_pages,
+        'Article_container': Article_container,
+        'Article_text': Article_text,
+        'Article_img_containers': Article_img_containers,
+        'Article_img': Article_img
     }
 
 
@@ -127,17 +132,29 @@ def add_article_img():
     """add img to db"""
     if request.method == 'POST':
         return str(Article_class.add_new_img_to_db(request))
-        # return 'test'
+
+### dell image
 @app.route('/api/article/del-img', methods=['GET','POST'])
 def del_article_img():
     """del img from db"""
     if request.method == 'POST':
         return str(Article_class.del_img_by_id(request.form['id']))
-        # return 'test'
+
+### create article
 @app.route('/api/article/create-article', methods=['GET','POST'])
 def create_article():
     """create article"""
     if request.method == 'POST':
         Article_class.create_article(request.form['json'])
         return 'ok'
-        # return 'test'
+
+###find article
+@app.route('/api/article/get-article/<page_name>', methods=['GET','POST'])
+def get_article(page_name):
+    """возвращает статью и все данные о ней'"""
+    return Article_class.get_article_by_name(page_name)
+###find article
+@app.route('/api/article/get-all-article-title', methods=['GET','POST'])
+def get_all_article_title():
+    """возвращает ссылки с путями'"""
+    return Article_class.get_all_article_title()
