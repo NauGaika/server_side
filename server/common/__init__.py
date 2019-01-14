@@ -5,6 +5,7 @@ from .. import db
 from sqlalchemy import inspect
 import flask_sqlalchemy
 import os
+from .Article_class import *
 
 class GetAllRecords:
 
@@ -103,9 +104,6 @@ class GetAllRecords:
         if self.is_exist:
             return self.data
         return 'Таблицы {} не существует'.format(self.tableName)
-
-
-
 class SetNewRecord:
     def __init__(self, tableName, request):
         #корневая папка для загрузки файлов
@@ -229,3 +227,5 @@ class SetNewRecord:
             self.classDB = False
     def __call__(self):
         return self.message
+
+__all__ = ['GetAllRecords', 'SetNewRecord', 'Article_class']

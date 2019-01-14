@@ -197,11 +197,14 @@ class Menu_points(db.Model, Menu_points_mixin):
     general_point_id = db.Column(db.Integer, db.ForeignKey('menu_points.id'))
     general_point = db.relationship('Menu_points', backref="sub_point", remote_side="Menu_points.id")
 
+########################3
 class Article_pages(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    page_name = db.Column(db.Text)
-    page_transcription = db.Column(db.Text)
-    Article_container = db.relationship('Article_container', backref="article")
+    page_name = db.Column(db.Text, nullable=False)
+    page_description = db.Column(db.Text, nullable=False)
+    page_transcription = db.Column(db.Text, nullable=False)
+    article_containers = db.relationship('Article_container', backref="article")
+    date = db.Column(db.DateTime, nullable = False, default=datetime.utcnow)
 
 class Article_container(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -210,7 +213,9 @@ class Article_container(db.Model):
     position =  db.Column(db.Integer)
     container_type = db.String(240)
     article_text = db.relationship('Article_text', backref="article_container")
-    article_img = db.relationship('Article_img', backref="article_container")
+    article_img = db.relationship('Article_img_containers', backref="article_container")
+    def __repr__(self):
+        return '<контейнер id {} name {}>'.format(str(self.id), self.title)
 
 class Article_text(db.Model):
     id= db.Column(db.Integer, primary_key=True)
@@ -220,8 +225,7 @@ class Article_text(db.Model):
 class Article_img_containers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cont_id = db.Column(db.Integer, db.ForeignKey('article_container.id'))
-    srcs = db.relationship('Article_img', backref="article_img_container")
-    alt = db.Column(db.Text)
+    imges = db.relationship('Article_img', backref="article_img_container")
 
 class Article_img(db.Model):
     id = db.Column(db.Integer, primary_key=True)

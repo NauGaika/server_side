@@ -2,9 +2,9 @@
 import os
 from server import app, db
 from flask import Flask, flash, request, redirect, url_for, send_from_directory, render_template, abort
-from .common import GetAllRecords, SetNewRecord
+from .common import *
 from . import app
-from .models import Category, Common_props, Menu_points, Glass_type, Glass, Glass_option, Good, Good_option, Treetment, Treetment_option
+from .models import Category, Common_props, Menu_points, Glass_type, Glass, Glass_option, Good, Good_option, Treetment, Treetment_option, Article_pages, Article_container, Article_text, Article_img_containers, Article_img
 
 @app.shell_context_processor
 def make_shell_context():
@@ -126,6 +126,18 @@ def get_default_option_glass():
 def add_article_img():
     """add img to db"""
     if request.method == 'POST':
-        print(request.form['alt'])
-        abort(404)
-        return 'test'
+        return str(Article_class.add_new_img_to_db(request))
+        # return 'test'
+@app.route('/api/article/del-img', methods=['GET','POST'])
+def del_article_img():
+    """del img from db"""
+    if request.method == 'POST':
+        return str(Article_class.del_img_by_id(request.form['id']))
+        # return 'test'
+@app.route('/api/article/create-article', methods=['GET','POST'])
+def create_article():
+    """create article"""
+    if request.method == 'POST':
+        Article_class.create_article(request.form['json'])
+        return 'ok'
+        # return 'test'
