@@ -196,6 +196,8 @@ class Menu_points(db.Model, Menu_points_mixin):
     position = db.Column(db.Integer)
     general_point_id = db.Column(db.Integer, db.ForeignKey('menu_points.id'))
     general_point = db.relationship('Menu_points', backref="sub_point", remote_side="Menu_points.id")
+    def __repr__(self):
+        return '<контейнер id {} name {}>'.format(str(self.id), self.title)
 
 ########################3
 class Article_pages(db.Model):

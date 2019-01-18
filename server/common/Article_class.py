@@ -3,10 +3,46 @@ import os
 from .. import app
 from flask import Flask, flash, request, redirect, url_for, abort
 from werkzeug.utils import secure_filename
-from ..models import Article_pages, Article_container, Article_text, Article_img_containers, Article_img
+from ..models import Article_pages, Article_container, Article_text, Article_img_containers, Article_img, Common_props
 from .. import db
 import json
 
+letters = {u'а': u'a',
+                   u'б': u'b',
+                   u'в': u'v',
+                   u'г': u'g',
+                   u'д': u'd',
+                   u'е': u'e',
+                   u'ё': u'e',
+                   u'ж': u'zh',
+                   u'з': u'z',
+                   u'и': u'i',
+                   u'й': u'y',
+                   u'к': u'k',
+                   u'л': u'l',
+                   u'м': u'm',
+                   u'н': u'n',
+                   u'о': u'o',
+                   u'п': u'p',
+                   u'р': u'r',
+                   u'с': u's',
+                   u'т': u't',
+                   u'у': u'u',
+                   u'ф': u'f',
+                   u'х': u'h',
+                   u'ц': u'ts',
+                   u'ч': u'ch',
+                   u'ш': u'sh',
+                   u'щ': u'sch',
+                   u'ъ': u'',
+                   u'ы': u'y',
+                   u'ь': u'',
+                   u'э': u'e',
+                   u'ю': u'yu',
+                   u'я': u'ya',
+                   u' ': u'-',
+                   u'.': '',
+                   u',': ''}
 class Article_class:
     def __init__(self):
         pass
@@ -57,15 +93,16 @@ class Article_class:
     @classmethod
     def create_article(cls, json_ob):
         big_data = json.loads(json_ob)
-        containers = big_data['containers']
-        name = big_data['name']
-        description = big_data['description']
-        translit = big_data['translit']
-        container_fillers = []
-
-        page = cls.create_page_obj(name, description, translit)
-        containers = cls.create_containers(containers, page, container_fillers)
-        db.session.commit()
+        password = big_data['pass']
+        if Common_props.check_pass(password):
+            containers = big_data['containers']
+            name = big_data['name']
+            description = big_data['description']
+            translit = big_data['translit']
+            container_fillers = []
+            page = cls.create_page_obj(name, description, translit)
+            containers = cls.create_containers(containers, page, container_fillers)
+            db.session.commit()
 
     @classmethod
     def create_page_obj(cls, name, description, translit):
@@ -157,5 +194,21 @@ class Article_class:
             'title': i.page_name
             })
         return json.dumps(to_deliv)
+
+    @classmethod
+    def create_transcript(cls, name):
+        name.lower()
+        translit_string = name
+        for char in letters.keys():
+            translit_string = translit_string.replace(char, letters[char])
+        return translit_string
+
+    @classmethod
+    def article_in_base(cls, name):
+        translit = cls.create_transcript(name)
+        # print(translit)
+        if cls.article_by_name(translit):
+            return ""
+        return translit
 
 __all__ = ['Article_class']

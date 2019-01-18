@@ -158,3 +158,13 @@ def get_article(page_name):
 def get_all_article_title():
     """возвращает ссылки с путями'"""
     return Article_class.get_all_article_title()
+###find article
+@app.route('/api/article/is_exist/<name>', methods=['GET','POST'])
+def article_is_exist(name):
+    """возвращает ссылки с путями'"""
+    return Article_class.article_in_base(name)
+
+@app.route('/api/article/check_pass', methods=['GET','POST'])
+def check_pass():
+    """проверяем пароль администратора'"""
+    return Common_props.check_pass(request.form['pass'])
