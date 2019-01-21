@@ -157,6 +157,7 @@ def get_article(page_name):
 @app.route('/api/article/get-all-article-title', methods=['GET','POST'])
 def get_all_article_title():
     """возвращает ссылки с путями'"""
+    print('test')
     return Article_class.get_all_article_title()
 ###find article
 @app.route('/api/article/is_exist/<name>', methods=['GET','POST'])

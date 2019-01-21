@@ -187,6 +187,7 @@ class Article_class:
     @classmethod
     def get_all_article_title(cls):
         all_art = Article_pages.query.all()
+        print(all_art)
         to_deliv = []
         for i in all_art:
             to_deliv.append({
