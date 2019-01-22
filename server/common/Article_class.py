@@ -170,7 +170,6 @@ class Article_class:
                 elif i.article_img:
                     big_data['containers'].append({'type': 'img', 'images': []})
                     newArr = big_data['containers'][-1]['images']
-                    print(newArr)
                     for b in i.article_img[0].imges:
                         newArr.append({
                         'alt': b.alt,
@@ -187,7 +186,6 @@ class Article_class:
     @classmethod
     def get_all_article_title(cls):
         all_art = Article_pages.query.all()
-        print(all_art)
         to_deliv = []
         for i in all_art:
             to_deliv.append({
@@ -207,7 +205,6 @@ class Article_class:
     @classmethod
     def article_in_base(cls, name):
         translit = cls.create_transcript(name)
-        # print(translit)
         if cls.article_by_name(translit):
             return ""
         return translit

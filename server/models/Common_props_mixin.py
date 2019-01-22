@@ -22,5 +22,4 @@ class Common_props_mixin(object):
         password = hashlib.sha1(password.encode('utf-8')).hexdigest()
         if pass_db.value == password:
             return 'ok'
-        print(pass_db)
-        abort(403)
+        return 'not'

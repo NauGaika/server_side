@@ -11,6 +11,7 @@ from .Glass_mixin import *
 from .Treet_mixin import *
 from .Order_mixin import *
 from .Menu_points_mixin import *
+from .Delivery_mixin import *
 
 glass_cat = db.Table('glass_cat',
     db.Column('cat_id', db.Integer, db.ForeignKey('category.id')),
@@ -137,58 +138,6 @@ class Treetment_option(db.Model):
     def __repr__(self):
         return '<Обработка стекла {}>'.format(self.name)
 
-
-#Пользователи
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(64), nullable=False)
-#     telephone = db.Column(db.String(120), unique=True, nullable=False)
-#     is_activated = db.Column(db.Boolean)
-#     code_activate = db.Column(db.Integer)
-#
-#     orders = db.relationship('Order', backref="user")
-#
-#     def __repr__(self):
-#         return '<ID {} User {}>'.format(str(self.id), self.name)
-
-#Статус заказа
-# class Order_state(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(240), nullable=False)
-#     title = db.Column(db.String(240), nullable=False)
-#
-#     order = db.relationship('Order', backref="order_state")
-#
-#     def __repr__(self):
-#         return '<Статус заказа {}>'.format(self.name)
-
-#Заказ
-# class Order(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     is_confim = db.Column(db.Boolean)
-#     is_paid = db.Column(db.Boolean)
-#     number_of_order = db.Column(db.String(240), nullable=False)
-#     date_order = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-#
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-#     order_state_id = db.Column(db.Integer, db.ForeignKey('order_state.id'))
-#
-#     order_goods = db.relationship('Order_goods', backref="order")
-#
-#     def __repr__(self):
-#         return '<Номер заказа {}>'.format(self.number_of_order)
-
-#Товары заказа
-# class Order_goods(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     price = db.Column(db.Float, nullable=False)
-#
-#     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
-#     good_option = db.Column(db.Integer, db.ForeignKey('good_option.id'))
-#
-#     def __repr__(self):
-#         return '<Номер товар заказа с id  {}>'.format(self.order_id)
-
 class Menu_points(db.Model, Menu_points_mixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(240), nullable=False)
@@ -243,3 +192,9 @@ class Article_img(db.Model):
     alt = db.Column(db.Text)
     src = db.Column(db.Text, nullable=False)
     article_img_container_id = db.Column(db.Integer, db.ForeignKey('article_img_containers.id'))
+
+#################
+class Delivery(db.Model, Delivery_mixin):
+    id = db.Column(db.Integer, primary_key=True)
+    region = db.Column(db.Text, nullable=False)
+    price = db.Column(db.Float, nullable=False)
