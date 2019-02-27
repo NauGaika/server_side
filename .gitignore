@@ -1,3 +1,4 @@
 env/
 envname/
 *.pyc
+server/conf.py

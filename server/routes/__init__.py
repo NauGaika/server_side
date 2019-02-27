@@ -22,6 +22,7 @@ from .Articles import articles_api
 from .Menu_points import menu_points_api
 from .Category import category_api
 from .Delivery import delivery_api
+from .Tiles import tiles_api
 
 
 @app.shell_context_processor
@@ -50,6 +51,7 @@ app.register_blueprint(articles_api)
 app.register_blueprint(menu_points_api)
 app.register_blueprint(category_api)
 app.register_blueprint(delivery_api)
+app.register_blueprint(tiles_api)
 
 #для создания стекла
 @app.route('/api/get-all-category-for-glass/', methods=['GET','POST'])
