@@ -23,7 +23,7 @@ html5lib==1.0.1
 idna==2.7
 itsdangerous==0.24
 Jade-Application-Kit==1.3.5
-Jinja2==2.10
+Jinja2==2.11.3
 keyutils==0.5
 lensfun==0.3.2
 lightdm-gtk-greeter-settings==1.2.2
